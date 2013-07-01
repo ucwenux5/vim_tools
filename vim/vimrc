@@ -66,16 +66,9 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Myself
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"解决菜单乱码
-set langmenu=zh_CN.UTF-8                 "设置菜单语言
-source $VIMRUNTIME/delmenu.vim    "导入删除菜单脚本，删除乱码的菜单
-source $VIMRUNTIME/menu.vim          "导入正常的菜单脚本
-language messages zh_CN.utf-8          "设置提示信息语言 
 " adb logcat 
 au BufRead,BufNewFile *.logcat set filetype=logcat
 
-"删除闪烁光标
-"set gcr=a:block-blinkon0
 
 let g:winManagerWindowLayout='FileExplorer|TagList'
 "wm 打开wmtoggle窗口
@@ -83,64 +76,6 @@ nmap wm :WMToggle<cr>
 
 "wl 打开taglist窗口
 nmap wl :Tlist<cr>
-"save use ctrl-s
-inoremap <C-S> <esc>:w<cr>
-nnoremap <C-S> :w<cr>
-" Cut
-vnoremap <C-X> "+x
-vnoremap <BS> s
-
-" Copy, use CTRL-Break to cancel an operation
-vnoremap <C-C> "+y
-inoremap <C-C> <Nop>
-
-" Use CTRL-Q to do what CTRL-V used to do
-noremap <unique><C-Q> <C-V>
-
-" Paste, use CTRL-V
-nnoremap <C-V> "+p
-vnoremap <C-V> "+p
-nnoremap ,<C-V> "+P
-" Use Paste() to toggle 'paste' option, or the indent of the paste content
-" will be a mess.
-inoremap <C-V> <C-O>:call Paste("beforePaste")<CR>
-      \<C-R>+<C-O>:call Paste("afterPaste")<CR>
-cnoremap <C-V> <C-R>+
-
-" Indent last pasted contents
-nnoremap <F9> '[v']=']
-inoremap <F9> <ESC>'[v']=']a
-
-" Select all
-noremap <C-A> ggVG
-inoremap <C-A> <C-O>gg<C-O>gH<C-O>G
-cnoremap <C-A> <C-C>gggH<C-O>G
-onoremap <C-A> <C-C>gggH<C-O>G
-snoremap <C-A> <C-C>gggH<C-O>G
-xnoremap <C-A> <C-C>ggVG
-
-" Undo && Redo
-noremap <C-Z> u
-inoremap <C-Z> <C-O>u
-noremap <C-Y> <C-R>
-inoremap <C-Y> <C-O><C-R>
-
-" Toggle paste options, make insert mode paste(Ctrl-V) behaves correctly.
-function! Paste(mode)
-  if a:mode == "beforePaste"
-    let b:pasteOpt = &paste
-    set paste
-  elseif a:mode == "afterPaste"
-    if !exists("b:pasteOpt")
-      return
-    endif
-    let &paste = b:pasteOpt
-    unlet b:pasteOpt
-  endif
-endfunction
-
-nnoremap x "_x
-
 "let g:miniBufExplMapCTabSwitchBufs = 1
 "let g:miniBufExplMapWindowNavVim = 1
 "let g:miniBufExplMapWindowNavArrows = 1
@@ -159,20 +94,18 @@ nmap <C-_>i :cs find i <C-R>=expand("<cfile>")<CR><CR>
 :cs add ./cscope.out ./
 map <F8> :x<cr>
 map <F9> :q!<cr>
-
-"set fileformat=unix
-set fileformats=unix,dos
+set fileformat=unix
 
 
-"let g:AutoComplePop_lgnoreCaseOption=0
-"set ignorecase
+let g:AutoComplePop_lgnoreCaseOption=1
+set ignorecase
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Get out of VI's compatible mode.
 "nocompatible是为了和VI保持最大的兼容，除非你经常用于远程终端，或者调试
 "陌生的机械，否则就禁用掉好了，单机用户直接禁用好了.
-"set nocompatible
+set nocompatible
 
 "Sets how many lines of history VIM har to remember
 "保留历史命令个数，你用过什么命令，可以查到到
@@ -205,9 +138,6 @@ let g:mapleader = ","
 nmap <leader>w :w!<cr>
 nmap <leader>f :find<cr>
 
-" 乱码
-set fileencodings=utf-8,gbk
-
 "Fast reloading of the .vimrc
 "VIM的配置文件名字就是vimrc,位于你的磁盘的某个位置,一般
 ""来说,Windows位于安装位置或者你的个人配置文件夹,比如我的配置
@@ -220,15 +150,7 @@ set fileencodings=utf-8,gbk
 "When .vimrc is edited, reload it
 "autocmd! bufwritepost vimrc source ~/vim_local/vimrc
 
-"屏幕上保留被编辑文件的内容
-set t_ti= t_te=
 
-"设置光标行
-set cursorline
-highlight CursorLine guibg=lightblue ctermbg=lightgray
-
-"设置列光标
-"set cursorcolumn
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -257,14 +179,11 @@ set gfn=Monospace\ 11
 if has("gui_running")
 set guioptions-=T
 let psc_style='cool'
-"colorscheme ron
+colorscheme ron
 else
 set background=dark
 "colorscheme torte
 endif
-colorscheme desert         " 设定配色方案
-
-
 
 "Some nice mapping to switch syntax (useful if one mixes different languages in one file)
 ""根据不同的文件类型,配置不同的语法文件.还记得吗?<leader>前面
@@ -274,8 +193,8 @@ colorscheme desert         " 设定配色方案
 ""缓冲区的顶部。这段设置,请根据你使用的程序做设置
 "fromstart我没有查到这个功能,根据意思,我估计为作者留下的给用户
 ""算定配置的地方
-map <leader>1 :set syntax=cpp<cr>
-map <leader>2 :set syntax=java<cr>
+map <leader>1 :set syntax=cheetah<cr>
+map <leader>2 :set syntax=xhtml<cr>
 map <leader>3 :set syntax=python<cr>
 map <leader>4 :set ft=javascript<cr>
 map <leader>$ :syntax sync fromstart<cr>
@@ -286,7 +205,6 @@ autocmd BufEnter * :syntax sync fromstart "自动匹配用户读入的程序文�
 if has("gui_running")
 set cursorline
 hi cursorline guibg=#333333
-set cursorcolumn
 hi CursorColumn guibg=#333333
 endif  "保存一下,是不是超酷的效果啊,颜色请自行配置,一定要和背景色有反差
 
@@ -316,7 +234,7 @@ nmap <leader>fu :se ff=unix<cr>
 "Set 7 lines to the curors - when moving vertical..
 "scrolloff光标上下两侧最少保留的屏幕行数,简单来说,就是把光标始终
 ""固定在屏幕大概约中间的位置,上下至少留七行,这样翻页的时候不会混乱,很实用的功能
-set scrolloff=0
+set so=7
 
 "Turn on WiLd menu
 "命令行补全以增强模式运行.就是屏幕下方的命令行状态里,不设置时
@@ -533,7 +451,7 @@ iab xname Amir Salihefendic
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Remap VIM 0
 "用0来替换^号,使跳到行首使用0命令
-"map 0 ^ 
+map 0 ^ 
 
 "Move a line of text using control
 "普通模式下,<M-j>调整当前行往下一行,<M-k>调整当前行往上一行
@@ -613,7 +531,7 @@ cnoremap <C-K> <C-U>
 " => Buffer realted
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Fast open a buffer by search for a name
-"map <c-q> :sb
+map <c-q> :sb
 
 "Open a dummy buffer for paste
 "在指定目录下创建一个临时文件
@@ -702,8 +620,8 @@ map <leader>t4 :set shiftwidth=4<cr>
 
 ":类似于:set，但只设置局部于当前缓冲区或者窗口的值。
 ""本句表示设置以下文件html,python,vim,javacript的自动缩进为2
-au FileType html,python,vim,javascript setl shiftwidth=4
-au FileType html,python,vim,javascript setl tabstop=4
+au FileType html,python,vim,javascript setl shiftwidth=2
+au FileType html,python,vim,javascript setl tabstop=2
 
 "设置java的自动缩进为4
 au FileType java setl shiftwidth=4
@@ -1061,8 +979,9 @@ map <c-u> <c-l><c-j>:q<cr>:botright cw 10<cr>
 map <F5> :NERDTreeToggle<CR>
 imap <F5> <ESC>:NERDTreeToggle<CR>
 
-let Grep_Default_Filelist = '*.c *.h *.cpp'
+let Grep_Default_Filelist = '*.c *.h'
 nnoremap <silent> <F5> :Grep<CR>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => MISC
@@ -1095,8 +1014,3 @@ endtry
 exe ":write!"
 exe ":bd"
 endfunction
-
-
-
-
-

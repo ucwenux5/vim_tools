@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/'
+let g:netrw_dirhist_2='/home/wfliao/source_android/ics_a10/vendor/softwinner/tools/pack'
+let g:netrw_dirhist_3='/home/wfliao/source_android/ics_a10/device/softwinner/common/rild/usb_modeswitch.d'
+let g:netrw_dirhist_4='/home/wfliao/source_android/android2.3/android2.3.4/vendor/softwinner/buildroot'
